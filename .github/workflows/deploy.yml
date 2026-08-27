@@ -11,11 +11,17 @@ jobs:
       - name: Deploy to Server via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
           script: |
-            cd /var/www/mahmut-devops-backend
+            cd ${{ secrets.DEPLOY_PATH }}
             git pull origin main
             npm install
             pm2 restart mahmut-backend
+
+      - name: Perform Health Check
+        run: |
+          sleep 5
+          curl -f https://mahmut-backend.team-vit-devops.nl/api/health
