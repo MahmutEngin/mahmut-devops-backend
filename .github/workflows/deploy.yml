@@ -20,3 +20,8 @@ jobs:
             git pull origin main
             npm install
             pm2 restart mahmut-backend
+
+      - name: Perform Health Check
+        run: |
+          sleep 5
+          curl -f https://mahmut-backend.team-vit-devops.nl/api/health
